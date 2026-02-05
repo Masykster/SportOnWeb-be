@@ -24,8 +24,8 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Generate JWT (JSON Web Token)
-    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { 
-        expiresIn: "1d" 
+    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
+      expiresIn: "1d",
     });
 
     res.json({
@@ -34,16 +34,18 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
         id: user._id,
         name: user.name,
         email: user.email,
-      }
+      },
     });
-
   } catch (error) {
     console.error("Signin Error : ", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server  Error" });
   }
 };
 
-export const initiateAdmin = async (req: Request, res: Response): Promise<void> => {
+export const initiateAdmin = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
     const { email, password, name } = req.body;
 
@@ -51,7 +53,8 @@ export const initiateAdmin = async (req: Request, res: Response): Promise<void> 
     const count = await User.countDocuments({});
     if (count > 0) {
       res.status(400).json({
-        message: "We can only have 1 admin user, if you want to create new admin user, please delete the user manually from the database"
+        message:
+          "We can only have 1 admin user, if you want to create new admin user, please delete the user manually from the database",
       });
       return;
     }
@@ -62,12 +65,12 @@ export const initiateAdmin = async (req: Request, res: Response): Promise<void> 
     const newUser = new User({
       email,
       password: hashedPassword,
-      name
+      name,
     });
 
     await newUser.save();
 
-    res.status(201).json({ message: "Admin user created successfully!" });
+    res.status(201).json({ message: "Admin user created sucessfully!" });
   } catch (error) {
     console.error("Initiate new admin user error : ", error);
     res.status(500).json({ message: "Internal Server Error" });
